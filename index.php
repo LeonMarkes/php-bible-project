@@ -14,13 +14,18 @@
             </div>
         </div>
         <div class="row mx-5">
-        <?php foreach($database->select_books() as $book) { ?>
+        <?php
+            $books = $database->select_books();
+            $bible_books = array();
+            foreach($books as $book) { 
+            if (!in_array($book, $bible_books)) {?>
+                <p> <?php echo $book['title'] . "<br>"; ?> </p>
+        <?php   array_push($bible_books, $book);
+        }
+
+    } ?>
             <p>
-                <?php echo $book->title; ?>
-            </p>
-        <?php } ?>
-            <p>
-                <?php print_r($database->select_books()); ?>
+                <?php //print_r($database->select_books()); ?>
             </p>
         </div>
     </div>

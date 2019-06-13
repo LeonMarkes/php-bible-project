@@ -22,7 +22,7 @@ class Database {
         return $result;
     }
     public function select_books() {
-        $books = $this->query("SELECT title FROM book")->fetch_object();
+        $books = $this->query("SELECT title FROM book");
         return $books;
     }
 }
