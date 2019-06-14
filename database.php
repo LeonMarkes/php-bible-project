@@ -25,6 +25,10 @@ class Database {
         $books = $this->query("SELECT title FROM book");
         return $books;
     }
+    public function select_bible_books($book_name) {
+        $books = $this->query("SELECT chaptID FROM book INNER JOIN sentence ON book.bookID = sentence.bookID WHERE title = '$book_name'");
+        return $books;
+    }
 }
 
 $database = new Database();
