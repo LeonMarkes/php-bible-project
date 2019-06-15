@@ -21,13 +21,17 @@ class Database {
         $result = $this->connection->query($sql); 
         return $result;
     }
-    public function select_books() {
+    public function select_bible_books() {
         $books = $this->query("SELECT title FROM book");
         return $books;
     }
-    public function select_bible_books($book_name) {
-        $books = $this->query("SELECT chaptID FROM book INNER JOIN sentence ON book.bookID = sentence.bookID WHERE title = '$book_name'");
-        return $books;
+    public function select_chapters($book_name) {
+        $chapters = $this->query("SELECT chaptID FROM book INNER JOIN sentence ON book.bookID = sentence.bookID WHERE title = '$book_name'");
+        return $chapters;
+    }
+    public function select_sentences($book_name, $chapter) {
+        $sentences = $this->query("SELECT sentID FROM book INNER JOIN sentence ON book.bookID = sentence.bookID WHERE title = '$book_name' AND chaptID = '$chapter'");
+        return $sentences;
     }
 }
 
