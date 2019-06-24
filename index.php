@@ -18,8 +18,8 @@
                 data: { book_name: bookName },
                 type: 'post',
                 success: function(data) {
+                    //$('.sentences').hide();
                     $('.chapters').html(data);
-                    $('a.chapter').load($(this).attr('class'));
                     console.log(data);
                 },
                 error: function(error) {
@@ -28,11 +28,10 @@
             });
             console.log("done");
         });
-        $('body').on('click', 'chapter', function(event) {
-            console.log("klik");
+        $('.chapters').on('click', '.chapter', function(event) {
             var chapterNumber = event.target.id, bookName = event.target.name;
-            console.log(chapterNumber);
-            console.log(bookName);
+            // console.log(chapterNumber);
+            // console.log(bookName);
             $.ajax({
                 url: 'create_elements.php',
                 data: { chapter_number: chapterNumber, book_name: bookName },

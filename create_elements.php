@@ -4,7 +4,6 @@ class Create_elements {
     public function dropdown($content, $first_post = "", $second_post = "") {
         global $database;
         $array = array();
-        echo "EE";
         switch($content) {
             case "books":
                 $values = $database->select_bible_books();
@@ -19,6 +18,8 @@ class Create_elements {
                 $extra_classes = "chapter";
                 break;
             case "sentence":
+                echo $first_post;
+                echo $second_post;
                 $values = $database->select_sentences($first_post, $second_post);
                 $assoc = "sentID";
                 $name = "Sentences";
@@ -44,8 +45,8 @@ if (isset($_POST['book_name'])) {
     echo $create->dropdown("chapter", $_POST['book_name']);
 }
 if (isset($_POST['chapter_number']) && isset($_POST['book_name'])) {
-    echo "pre";
+    echo $_POST['chapter_number'];
+    echo $_POST['book_name'];
     echo $create->dropdown("sentence", $_POST['chapter_number'], $_POST['book_name']);
-    echo "post";
 }
 ?>
