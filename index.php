@@ -4,7 +4,7 @@
         <div class="row"><?php echo $create->dropdown("books"); ?></div>
         <div class="row chapters"></div>
         <div class="row sentences"></div>
-        <div class="row mx-5"></div>
+        <div class="row textarea"></div>
     </div>
 
     <script type="text/javascript">
@@ -15,7 +15,7 @@
             console.log(event);        
             $.ajax({
                 url: 'create_elements.php',
-                data: { book_name: bookName },
+                data: { first_book_name: bookName },
                 type: 'post',
                 success: function(data) {
                     //$('.sentences').hide();
@@ -30,14 +30,31 @@
         });
         $('.chapters').on('click', '.chapter', function(event) {
             var chapterNumber = event.target.id, bookName = event.target.name;
-            // console.log(chapterNumber);
-            // console.log(bookName);
             $.ajax({
                 url: 'create_elements.php',
-                data: { chapter_number: chapterNumber, book_name: bookName },
+                data: { second_chapter_number: chapterNumber, second_book_name: bookName },
                 type: 'post',
                 success: function(data) {
                     $('.sentences').html(data);
+                    console.log(data);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+            console.log("done");
+        });
+        $('.sentences').on('click', '.sentence', function(event) {
+            var chapterNumber = event.target.id, bookName = event.target.name, sentenceNumber = event.target.innerText;
+            console.log(sentenceNumber);
+            console.log(chapterNumber);
+            console.log(bookName);
+            $.ajax({
+                url: 'create_elements.php',
+                data: { third_chapter_number: chapterNumber, third_book_name: bookName, third_sentence_number: sentenceNumber},
+                type: 'post',
+                success: function(data) {
+                    $('.textarea').html(data);
                     console.log(data);
                 },
                 error: function(error) {

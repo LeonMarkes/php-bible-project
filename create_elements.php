@@ -18,13 +18,10 @@ class Create_elements {
                 $extra_classes = "chapter";
                 break;
             case "sentence":
-                echo $first_post;
-                echo $second_post;
                 $values = $database->select_sentences($first_post, $second_post);
                 $assoc = "sentID";
                 $name = "Sentences";
                 $extra_classes = "sentence";
-                echo "Srbija";
                 break;
         }
         $dropdown = "<div class='dropdown m-5'>";
@@ -39,14 +36,27 @@ class Create_elements {
         $dropdown .= "</div></div>";
         return $dropdown;
     }
+    public function textarea($book_name, $chapter_number, $sentence_number) {
+        global $database;
+        $sentence = $database->select_sentence($book_name, $chapter_number, $sentence_number)->fetch_assoc();
+        echo $sentence['sentence'];
+        //ne prikazuje se rečenica, probaj na neki drugi način dohvatiti podatke
+        $textarea = "<textarea name='sentence' form='textareaForm'>";
+        $textarea .= $sentence['sentence'];
+        $textarea .= "</textarea>";
+        return $textarea;
+        
+    }
 }
 $create = new Create_elements();
-if (isset($_POST['book_name'])) {
-    echo $create->dropdown("chapter", $_POST['book_name']);
+if (isset($_POST['first_book_name'])) {
+    echo $create->dropdown("chapter", $_POST['first_book_name']);
 }
-if (isset($_POST['chapter_number']) && isset($_POST['book_name'])) {
-    echo $_POST['chapter_number'];
-    echo $_POST['book_name'];
-    echo $create->dropdown("sentence", $_POST['chapter_number'], $_POST['book_name']);
+if (isset($_POST['second_chapter_number']) && isset($_POST['second_book_name'])) {
+    echo $create->dropdown("sentence", $_POST['second_chapter_number'], $_POST['second_book_name']);
+}
+if (isset($_POST['third_chapter_number']) && isset($_POST['third_sentence_number']) && isset($_POST['third_book_name'])) {
+    echo "IMAMO PRECJEDNICU!!!";
+    echo $create->textarea($_POST['third_chapter_number'], $_POST['third_sentence_number'], $_POST['third_book_name']);
 }
 ?>

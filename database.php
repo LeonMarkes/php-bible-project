@@ -33,6 +33,10 @@ class Database {
         $sentences = $this->query("SELECT sentID FROM book INNER JOIN sentence ON book.bookID = sentence.bookID WHERE title = '$book_name' AND chaptID = '$chapter'");
         return $sentences;
     }
+    public function select_sentence($book_name, $chapter, $sentence) {
+        $the_sentence = $this->query("SELECT sentence FROM book INNER JOIN sentence ON book.bookID = sentence.bookID WHERE title = '$book_name' AND chaptID = '$chapter' AND sentID = '$sentence'");
+        return $the_sentence;
+    }
 }
 
 $database = new Database();
