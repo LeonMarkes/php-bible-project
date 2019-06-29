@@ -1,5 +1,5 @@
 <?php 
-require('init.php');
+require_once('init.php');
 if($_POST['book_name']) {
     $book = $_POST['book_name'];
     $chapters = array();

@@ -50,5 +50,22 @@ $(document).ready(function() {
         });
         console.log("done");
     });
+    $('.textarea').on('click', '.change', function(event) {
+        var bookName = event.target.id, chapterNumber = event.target.name, sentenceNumber = event.target.innerText;
+        console.log($('.bible-text').val());
+        // $.ajax({
+        //     url: 'create_elements.php',
+        //     data: { third_chapter_number: chapterNumber, third_book_name: bookName, third_sentence_number: sentenceNumber},
+        //     type: 'post',
+        //     success: function(data) {
+        //         $('.textarea').html(data);
+        //         console.log(data);
+        //     },
+        //     error: function(error) {
+        //         console.log(error);
+        //     }
+        // });
+        // console.log("done");
+    });
 });
     
