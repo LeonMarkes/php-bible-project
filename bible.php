@@ -33,6 +33,7 @@ class Bible {
             printf("Error message: %s\n", $database->connection->error);
         }
     }
+    
     public function insert_into_book($title) {
         $title = (string) $title;
         echo $title . " " . gettype($title) . "<br>";        

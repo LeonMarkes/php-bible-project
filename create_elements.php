@@ -4,13 +4,7 @@ class Create_elements {
     public function dropdown($content, $book = NULL, $chapter = NULL) {
         global $database;
         global $session;
-        echo $session->set_variable($content, $book);
-        // isset($_SESSION['book']) ? $sesson->set_variable($content, $book) : $sesson->set_variable($content, $chapter); //  provjera da li postoji ta session varijabla
-        if (!isset($_SESSION['book'])) {
-            $session->set_variable($content, $book);
-        } else {
-            $session->set_variable($content, $chapter);
-        }
+
         $array = array();
         switch($content) {
             case "books":
@@ -21,12 +15,14 @@ class Create_elements {
                 break;
             case "chapter":
                 $values = $database->select_chapters($book);
+                $session->set_variable("book", $book);
                 $assoc = "chaptID";
                 $name = "Choose a chapters";
                 $extra_classes = "chapter";
                 break;
             case "sentence":
                 $values = $database->select_sentences($book, $chapter);
+                $session->set_variable("chapter", $chapter);
                 $assoc = "sentID";
                 $name = "Choose a sentences";
                 $extra_classes = "sentence";
@@ -48,10 +44,12 @@ class Create_elements {
         echo '</pre>';
         return $dropdown;
     }
-    public function textarea($book_name, $chapter_number, $sentence_number) {
+    public function textarea($sentence_number) {
         global $database;
-        $sentence = $database->select_sentence($book_name, $chapter_number, $sentence_number)->fetch_assoc();
-        $textarea = "$book_name $chapter_number:$sentence_number <br>";
+        global $session;
+        $session->set_variable("sentence", $sentence_number);
+        $sentence = $database->select_sentence($_SESSION['book'], $_SESSION['chapter'], $_SESSION['sentence'])->fetch_assoc();
+        $textarea = $_SESSION['book'] . " " . $_SESSION['chapter'] . ":" . $_SESSION['sentence'] .  "<br>";
         $textarea .= "<textarea class='col-12 bible-text' name='edited_sentence' form='textareaForm' rows='6' cols='66'>";
         $textarea .= $sentence['sentence'];
         $textarea .= "</textarea>";
@@ -59,8 +57,9 @@ class Create_elements {
         $textarea .= "<input type='button' class='btn btn-info m-3 change' value='Change' name='change' />";
         $textarea .= "<input type='button' class='btn btn-warning m-3 restore' value='Restore' name='restore' />";
         $textarea .= "</form>";
+        $session->set_variable('sentence_text', $sentence['sentence']);
+        var_dump($_SESSION);
         return $textarea;
-        
     }
 }
 $create = new Create_elements();
@@ -69,9 +68,9 @@ if (isset($_POST['first_book_name'])) {
     echo $_SESSION['books'];
 }
 if (isset($_POST['second_chapter_number']) && isset($_POST['second_book_name'])) {
-    echo $create->dropdown("sentence", $_POST['second_chapter_number'], $_POST['second_book_name']);
+    echo $create->dropdown("sentence", $_POST['second_book_name'], $_POST['second_chapter_number']);
 }
 if (isset($_POST['third_chapter_number']) && isset($_POST['third_sentence_number']) && isset($_POST['third_book_name'])) {
-    echo $create->textarea($_POST['third_book_name'], $_POST['third_chapter_number'], $_POST['third_sentence_number']);
+    echo $create->textarea($_POST['third_sentence_number']);
 }
 ?>
