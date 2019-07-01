@@ -39,31 +39,53 @@ class Database {
     }
     public function get_book_id($sentence) {
         global $session;
-        $bookId = $this->connection->query("SELECT bookID FROM sentence WHERE sentence = '$sentence' AND chaptID = '" . $_SESSION['chapter'] . "' AND sentID = '" . $_SESSION['sentence'] . "'");
+        $bookId = $this->query("SELECT bookID FROM sentence WHERE sentence = '$sentence' AND chaptID = '" . $_SESSION['chapter'] . "' AND sentID = '" . $_SESSION['sentence'] . "'");
         return $bookId;
     }
     public function change_sentence($new_sentence) {
         // $book = (string) $_SESSION['book'];
         $chaptId = (int) $_SESSION['chapter'];
         $sentId = (int) $_SESSION['sentence'];
-        $orig_sentence = (int) $_SESSION['sentence_text'];
-        $bookId = (int) $this->get_book_id($orig_sentence);
-        $sentence = addslashes((string) $new_sentence);       
-        if (!$this->connection->query("INSERT INTO `orig_sentence` (chaptID, sentID, content, bookID) VALUES ({$chaptId}, {$sentId}, '{$orig_sentence}', {$bookId})")) {
-            printf("Error message: %s\n", $this->connection->error);
+        $orig_sentence = (string) $_SESSION['sentence_text'];
+        if(!(strlen($new_sentence) < (strlen($orig_sentence) / 2))) {
+            $bookId = (int) $this->get_book_id($orig_sentence);
+            $sentence = addslashes((string) $new_sentence);       
+            if (!$this->query("INSERT INTO `orig_sentence` (chaptID, sentID, content, bookID) VALUES ({$chaptId}, {$sentId}, '{$orig_sentence}', {$bookId})")) {
+                printf("Error message: %s\n", $this->connection->error);
+            } else {
+                $time = date('d, m, Y H:i:s');
+                $this->query("UPDATE sentence SET sentence = '$sentence', updated = '$time' WHERE bookID = '$bookId'");
+            }
+            return true;
         } else {
-            $time = date('d, m, Y H:i:s');
-            $this->connection->query("UPDATE sentence SET sentence = '$sentence', updated = '$time' WHERE bookID = '$bookId'");
+            return false;
         }
-        return true;
+        
+    }
+    public function restore_sentence() {
+        $chaptId = (int) $_SESSION['chapter'];
+        $sentId = (int) $_SESSION['sentence'];
+        $changed_sentence = (string) $_SESSION['sentence_text'];
+        $bookId = (int) $this->get_book_id($changed_sentence);
+        $orig_sentence = $this->query("SELECT content FROM orig_sentence WHERE chaptID = '$chaptId', sentID='$sentId', bookID='$bookId'");
+        $time = date('d, m, Y H:i:s');
+        $this->query("UPDATE sentence SET sentence = '$orig_sentence', updated = '$time' WHERE bookID = '$bookId'");
+        return $orig_sentence;
     }
 }
 
 $database = new Database();
 
-if($_POST['changed_text']) {
+if(isset($_POST['changed_text'])) {
     if($database->change_sentence($_POST['changed_text'])) {
         echo "Sentence has been changed.";
+    } else {
+        echo "error";
+    }
+}
+if(isset($_POST['restore'])) {
+    if($database->restore_sentence()) {
+        echo "Sentence has been restored.";
     } else {
         echo "error";
     }

@@ -53,10 +53,6 @@ class Create_elements {
         $textarea .= "<textarea class='col-12 bible-text' name='edited_sentence' form='textareaForm' rows='6' cols='66'>";
         $textarea .= $sentence['sentence'];
         $textarea .= "</textarea>";
-        $textarea .= "<form class='col-12' id='textareaForm' action='create_elements.php' method='POST'>";
-        $textarea .= "<input type='button' class='btn btn-info m-3 change' value='Change' name='change' />";
-        $textarea .= "<input type='button' class='btn btn-warning m-3 restore' value='Restore' name='restore' />";
-        $textarea .= "</form>";
         $session->set_variable('sentence_text', $sentence['sentence']);
         var_dump($_SESSION);
         return $textarea;
@@ -65,7 +61,7 @@ class Create_elements {
 $create = new Create_elements();
 if (isset($_POST['first_book_name'])) {
     echo $create->dropdown("chapter", $_POST['first_book_name']);
-    echo $_SESSION['books'];
+    echo $_SESSION['book'];
 }
 if (isset($_POST['second_chapter_number']) && isset($_POST['second_book_name'])) {
     echo $create->dropdown("sentence", $_POST['second_book_name'], $_POST['second_chapter_number']);
