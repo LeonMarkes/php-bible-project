@@ -39,7 +39,7 @@ class Database {
     }
     public function get_book_id($sentence) {
         global $session;
-        $bookId = $this->query("SELECT bookID FROM sentence WHERE sentence = '$sentence' AND chaptID = '" . $_SESSION['chapter'] . "' AND sentID = '" . $_SESSION['sentence'] . "'");
+        $bookId = $this->query("SELECT bookID FROM sentence WHERE sentence = '$sentence' AND chaptID = " . $_SESSION['chapter'] . " AND sentID = " . $_SESSION['sentence'] . ";");
         return $bookId;
     }
     public function change_sentence($new_sentence) {
@@ -47,19 +47,20 @@ class Database {
         $chaptId = (int) $_SESSION['chapter'];
         $sentId = (int) $_SESSION['sentence'];
         $orig_sentence = (string) $_SESSION['sentence_text'];
-        if(!(strlen($new_sentence) < (strlen($orig_sentence) / 2))) {
+        echo "e";
+        echo $new_sentence;
+            echo "Uspijeh";
             $bookId = (int) $this->get_book_id($orig_sentence);
             $sentence = addslashes((string) $new_sentence);       
-            if (!$this->query("INSERT INTO `orig_sentence` (chaptID, sentID, content, bookID) VALUES ({$chaptId}, {$sentId}, '{$orig_sentence}', {$bookId})")) {
+            if (!$this->query("INSERT INTO `origsentence` (chaptID, sentID, content, bookID) VALUES ({$chaptId}, {$sentId}, '{$orig_sentence}', {$bookId})")) {
                 printf("Error message: %s\n", $this->connection->error);
             } else {
                 $time = date('d, m, Y H:i:s');
                 $this->query("UPDATE sentence SET sentence = '$sentence', updated = '$time' WHERE bookID = '$bookId'");
             }
+            echo "true";
             return true;
-        } else {
-            return false;
-        }
+        
         
     }
     public function restore_sentence() {
@@ -77,11 +78,17 @@ class Database {
 $database = new Database();
 
 if(isset($_POST['changed_text'])) {
-    if($database->change_sentence($_POST['changed_text'])) {
+    echo "huehuehueheueuehue0";
+    echo $_POST['changed_text'] . "oiwdopqwuhdipquwgdoizqsgdsćijqwoijqqqqqqqqqqqqqqqqqqqqqqqqqqq";
+    $v = $database->change_sentence($_POST['changed_text']);
+    if($v) {
+        echo "pcwpeomcpemcvn";
         echo "Sentence has been changed.";
     } else {
         echo "error";
     }
+} else {
+    echo "Reka sam !JNe može!";
 }
 if(isset($_POST['restore'])) {
     if($database->restore_sentence()) {

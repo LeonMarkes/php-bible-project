@@ -41,7 +41,6 @@ $(document).ready(function() {
             data: { third_chapter_number: chapterNumber, third_book_name: bookName, third_sentence_number: sentenceNumber},
             type: 'post',
             success: function(data) {
-                $('buttons').css({"display":"block"});
                 $('.textarea').html(data);
                 // neka se pokažu buttoni i neka se proslijedi vrijednost textaree na drugi php file
                 console.log(data);
@@ -52,7 +51,7 @@ $(document).ready(function() {
         });
         console.log("done");
     });
-    $('.change').on('click', '.buttons', function(event) {
+    $('.buttons').on('click', '.change', function(event) {
        var changedText =  $('.bible-text').val();
         console.log(changedText);
        $.ajax({
@@ -62,19 +61,15 @@ $(document).ready(function() {
            success: function(data) {
                if(data) {
                    console.log("Original sentence is saved.")
-                   if(data) {
-                       $('.infobox').html("<p>Sentence has been changed.<p>");
-                   } else {
-                       $('.infobox').html("<p>Reka san ne može!<p>");
-                   }
-               }
+                   $('.infobox').html("<p>Sentence has been changed.ajax<p>");               
+                }
            },
            error: function(error) {
                console.log(error);
            }
        });
     });
-    $('.restore').on('click', '.buttons', function(event) {
+    $('.buttons').on('click', '.restore', function(event) {
         // neka se ovdje ubaci pokrene druga skripta gdje će se usporediti da li postoji tekst u orig_sent i onda će se obnoviti, ili ako nije zamjenjen neka se prikaže tekst iz sessiona
         var restore = true;
         $.ajax({

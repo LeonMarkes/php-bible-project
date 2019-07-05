@@ -61,7 +61,6 @@ class Create_elements {
 $create = new Create_elements();
 if (isset($_POST['first_book_name'])) {
     echo $create->dropdown("chapter", $_POST['first_book_name']);
-    echo $_SESSION['book'];
 }
 if (isset($_POST['second_chapter_number']) && isset($_POST['second_book_name'])) {
     echo $create->dropdown("sentence", $_POST['second_book_name'], $_POST['second_chapter_number']);
