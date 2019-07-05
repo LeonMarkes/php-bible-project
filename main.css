@@ -1,6 +1,6 @@
-.button-invisible {
+.invisible {
     opacity: 0;
 }
-.button-visible {
+.visible {
     opacity: 1;
 }

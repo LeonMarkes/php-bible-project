@@ -61,7 +61,7 @@ $(document).ready(function() {
            success: function(data) {
                if(data) {
                    console.log("Original sentence is saved.")
-                   $('.infobox').html("<p>Sentence has been changed.ajax<p>");               
+                   $('.infobox').html(data + "<p>Sentence has been changed.ajax<p>");               
                 }
            },
            error: function(error) {

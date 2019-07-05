@@ -8,8 +8,8 @@
         </div>
         <div class="row col-12 textarea"></div>
         <div class="row col-6 buttons">
-            <button type="button" class="btn btn-info m-3 button-invisible change" name="change">Change</button>
-            <button type="button" class="btn btn-warning m-3 button-invisible restore" name="restore">Restore</button>
+            <button type="button" class="btn btn-info m-3 invisible change" name="change">Change</button>
+            <button type="button" class="btn btn-warning m-3 invisible restore" name="restore">Restore</button>
         </div>
         <div class="test btn-info button-invisible"><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat in provident voluptatibus eius vel magni amet quibusdam quae. Animi incidunt, illo quisquam reiciendis totam unde sapiente necessitatibus nihil autem blanditiis?</p></div>
         <div class="row col-12 infobox"></div>
