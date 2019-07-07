@@ -54,7 +54,7 @@ class Create_elements {
         $textarea .= $sentence['sentence'];
         $textarea .= "</textarea>";
         $session->set_variable('sentence_text', $sentence['sentence']);
-        // var_dump($_SESSION);
+        var_dump($_SESSION);
         return $textarea;
     }
 }

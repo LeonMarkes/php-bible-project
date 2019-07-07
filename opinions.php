@@ -36,10 +36,18 @@ class Opinion {
         return $negative;
     }
 
+    public function write_into_csv($message) {
+        $file = fopen("emotion-report.csv", "a+");
+        $information = array($_SESSION['book'], $_SESSION['chapter'], $_SESSION['sentence'], $message);
+        fputcsv($file, $information);
+        fclose($file);
+    }
+
     public function check($sentence) {
         $sentence_array = explode(" ", strtolower($sentence));
         $positive = $this->positive($sentence_array);
         $negative = $this->negative($sentence_array);
+        $this->write_into_csv("This sentence has $positive positive words and $negative negative words.");
         return "This sentence has $positive positive words and $negative negative words.<br>";
     }
 
