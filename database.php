@@ -43,25 +43,29 @@ class Database {
         return $bookId;
     }
     public function change_sentence($new_sentence) {
-        // $book = (string) $_SESSION['book'];
         $chaptId = (int) $_SESSION['chapter'];
         $sentId = (int) $_SESSION['sentence'];
         $orig_sentence = (string) $_SESSION['sentence_text'];
-        echo $new_sentence . "<br>";
-        echo "Uspijeh<br>";
+
         $bookId = $this->get_book_id($orig_sentence)->fetch_assoc();
         $bookId = $bookId['bookID'];
-        $sentence = addslashes((string) $new_sentence);       
+        $sentence = addslashes((string) $new_sentence);
+
+        echo "Sentence: " . strlen($sentence) . "<br>";
+        echo "Original sentence: " . strlen($orig_sentence) . "<br>";
+
+        if (strlen($sentence) < (strlen($orig_sentence) / 2)) {
+            echo "Sentence is too short, please change it.";
+            return false;
+        }
         if (!$this->query("INSERT INTO `origsentence` (chaptID, sentID, content, bookID) VALUES ({$chaptId}, {$sentId}, '{$orig_sentence}', {$bookId})")) {
             printf("Error message: %s\n", $this->connection->error);
         } else {
             $time = date('d, m, Y H:i:s');
             $this->query("UPDATE sentence SET sentence = '$sentence', updated = '$time' WHERE bookID = '$bookId'");
         }
-        echo "true";
+
         return $bookId;
-        
-        
     }
     public function restore_sentence() {
         $chaptId = (int) $_SESSION['chapter'];
@@ -69,9 +73,12 @@ class Database {
         $changed_sentence = (string) $_SESSION['sentence_text']; // Ili session ne radi ili se ubacuje prazna varijabla
         $bookId = $this->get_book_id($changed_sentence)->fetch_assoc();
         $bookId = $bookId['bookID'];
-        $orig_sentence = $this->query("SELECT content FROM origsentence WHERE chaptID = '$chaptId', sentID='$sentId', bookID='$bookId'");
+
+        $orig_sentence = $this->query("SELECT content FROM origsentence WHERE chaptID = $chaptId AND sentID= $sentId AND bookID= $bookId")->fetch_assoc();
+        $orig_sentence = $orig_sentence['content'];
         $time = date('d, m, Y H:i:s');
         $this->query("UPDATE sentence SET sentence = '$orig_sentence', updated = '$time' WHERE bookID = '$bookId'");
+
         return $orig_sentence;
     }
 }
