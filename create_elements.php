@@ -39,9 +39,9 @@ class Create_elements {
             }
         }
         $dropdown .= "</div></div>";
-        echo '<pre>';
-        var_dump($_SESSION);
-        echo '</pre>';
+        // echo '<pre>';
+        // var_dump($_SESSION);
+        // echo '</pre>';
         return $dropdown;
     }
     public function textarea($sentence_number) {
@@ -54,7 +54,7 @@ class Create_elements {
         $textarea .= $sentence['sentence'];
         $textarea .= "</textarea>";
         $session->set_variable('sentence_text', $sentence['sentence']);
-        var_dump($_SESSION);
+        // var_dump($_SESSION);
         return $textarea;
     }
 }

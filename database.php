@@ -86,14 +86,10 @@ class Database {
 $database = new Database();
 
 if(isset($_POST['changed_text'])) {
-    $v = $database->change_sentence($_POST['changed_text']);
+    $database->change_sentence($_POST['changed_text']);
 } 
 if(isset($_POST['restore'])) {
-    if($database->restore_sentence()) {
-        echo "Sentence has been restored.";
-    } else {
-        echo "error";
-    }
+    $database->restore_sentence();
 }
 // if($database->connection) {
 //     echo 'spojen';

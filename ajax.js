@@ -77,17 +77,28 @@ $(document).ready(function() {
             data: {restore: restore},
             type: 'post',
             success: function(data) {
-                if(data) {
-                    console.log("Original sentence has been restored.")
+                    console.log("Original sentence has been restored.");
                     $('.textarea').html(data);
-                }
             },
             error: function(error) {
                 console.log(error);
             }
         });
     });
-    
-    
+    $('.buttons').on('click', '.emotions', function(event) {
+        var emotion = true;
+        $.ajax({
+            url: 'opinions.php',
+            data: {emotion: emotion},
+            type: 'post',
+            success: function(data) {
+                console.log("Emotions have been checked.");
+                $('.emotions-div').html(data);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
 });
     
