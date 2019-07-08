@@ -44,18 +44,45 @@ class Opinion {
     }
 
     public function check($sentence) {
+        $emotion = $this->check_positive_negative($sentence);
+        $this->write_into_csv("This sentence has $emotion[0] positive words and $emotion[1] negative words.");
+        return "This sentence has $emotion[0] positive words and $emotion[1] negative words.<br>";
+    }
+    public function check_positive_negative($sentence) {
         $sentence_array = explode(" ", strtolower($sentence));
         $positive = $this->positive($sentence_array);
         $negative = $this->negative($sentence_array);
-        $this->write_into_csv("This sentence has $positive positive words and $negative negative words.");
-        return "This sentence has $positive positive words and $negative negative words.<br>";
+        return array($positive, $negative);
     }
-
+    public function check_chapter_emotions() {
+        global $database;
+        $array = array();
+        $book = $_SESSION['book'];
+        $chapters = $database->select_chapters($book);
+        $sentence = "";
+        foreach ($chapters as $chapter) {
+            if (!in_array($chapter, $array)) {
+                $bible_chapter = $database->select_chapter($chapter['chaptID']);
+                foreach ($bible_chapter as $bible_sentence) {
+                    $sentence .= $bible_sentence['sentence'] . " ";
+                }
+                // print_r($bible_chapter);
+                $emotions = $this->check_positive_negative($sentence);
+                $positive = $emotions[0];
+                $negative = $emotions[1];
+                echo $chapter['chaptID'] . ". of $book has $positive positive and $negative negative words. <br>";
+                array_push($array, $chapter);
+            }
+        }
+    }
 }
 
 $opinion = new Opinion();
 // echo $opinion->check("Suffering War-like Hug Death Love");
 if(isset($_POST['emotion'])) {
     echo $opinion->check($_SESSION['sentence_text']);
+} 
+if(isset($_POST['check_emotions'])) {
+    $opinion->check_chapter_emotions();    
 } 
 ?>

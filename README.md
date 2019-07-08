@@ -11,6 +11,7 @@ Nakon toga napraviti aplikaciju na kojoj se omogućuje ažuriranje rečenica iz 
 
 U aplikaciju učitati dvije liste riječi (pozitivne i negativne) koje se nalaze u opinion-lexicon-English.rar 
 Na temelju ovog popisa za svaku rečenicu iz biblije izračunati i prikazati broj pozitivnih i negativnih riječi te njihovu razliku (*).
+
 Također izračunati i prikazati broj pozitivnih i negativnih riječi te njihovu razliku za svako poglavlje svake knjige, te omjer broja pozitivnih i negativnih u odnosu na ukupni broj riječi.
 Ispisati top listu 10 najpozitivnijih i nejnegativnijih poglavlja s obzirom na apsolutni broj, te s obzirom na omjer.
 

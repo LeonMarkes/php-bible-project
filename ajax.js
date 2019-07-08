@@ -100,5 +100,22 @@ $(document).ready(function() {
             }
         });
     });
+    $(".book-button").on("click", ".check-emotions", function(event) {
+        var checkEmotions = true;       
+        $.ajax({
+            url: 'opinions.php',
+            data: { check_emotions: checkEmotions },
+            type: 'post',
+            success: function(data) {
+                //$('.sentences').hide();
+                $('.emotion-list').html(data);
+                //console.log(data);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+        console.log("done");
+    });
 });
     
