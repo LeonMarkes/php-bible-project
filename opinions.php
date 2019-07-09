@@ -15,12 +15,13 @@ class Opinion {
     public function word_counter($sentence, $emotion_words) {
         $counter = 0;
         foreach ($emotion_words as $emotion_word) {
-            $emotion_word = trim($emotion_word);
-            
-            if (strpos($sentence, $emotion_word)) {
-                echo $emotion_word;
-                $counter++;
+            $emotion_word = (string) trim($emotion_word);
+            if(!empty($emotion_word)) {
+                if (strpos($sentence, $emotion_word)) {
+                    $counter++;
+                } 
             }
+            
         }
         return $counter;
     }
@@ -55,22 +56,11 @@ class Opinion {
         return array($positive, $negative);
     }
     public function check_chapter_emotions() {
-        $executionStartTime = microtime(true);
         global $database;
-        $executionEndTime = microtime(true);
-        echo $executionStartTime - $executionEndTime . "<br>";
         $array = array();
         $book = $_SESSION['book'];
-        $executionEndTime = microtime(true);
-        echo $executionStartTime - $executionEndTime . "<br>";
         $chapters = $database->select_chapters($book);
-        $executionEndTime = microtime(true);
-        echo $executionStartTime - $executionEndTime . "<br>";
-        $sentence = "";
         foreach ($chapters as $chapter) {
-            $executionEndTime = microtime(true);
-            echo $executionStartTime - $executionEndTime . "<br>";
-            echo $chapter['chaptID'] . "<br>";
             if (!in_array($chapter, $array)) {
                 $bible_chapter = $database->select_chapter($chapter['chaptID']);
                 // print_r($bible_chapter);
@@ -81,8 +71,6 @@ class Opinion {
                 array_push($array, $chapter);
             }
         }
-        $executionEndTime = microtime(true);
-        echo $executionStartTime - $executionEndTime . "<br>";
     }
 }
 
