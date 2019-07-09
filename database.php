@@ -29,8 +29,11 @@ class Database {
         // global $session;
         // tu se u chapdID proslijeđuje string 
         $chapter = $this->query("SELECT sentence FROM book INNER JOIN sentence ON book.bookID = sentence.bookID WHERE title = '" . $_SESSION['book'] . "' AND chaptID = $selected_chapter");
-        print_r($chapter);
-        return $chapter;
+        while ($row = mysqli_fetch_assoc($chapter)) {
+            $chapterarray[] = $row['sentence'];
+        }
+        $text = implode(" ", $chapterarray);
+        return $text;
     }
     public function select_chapters($book_name) {
         $chapters = $this->query("SELECT chaptID FROM book INNER JOIN sentence ON book.bookID = sentence.bookID WHERE title = '$book_name'");

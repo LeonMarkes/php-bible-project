@@ -3,6 +3,7 @@ include("init.php");
 
 class Opinion {
 
+
     public function read_file($file_name) {
         $file = fopen($file_name, "r");
         $words = fread($file, filesize($file_name));
@@ -13,12 +14,12 @@ class Opinion {
 
     public function word_counter($sentence, $emotion_words) {
         $counter = 0;
-        foreach ($sentence as $word) {
-            foreach ($emotion_words as $emotion_word) {
-                $emotion_word = trim($emotion_word);
-                if (strcmp($word, $emotion_word) == 0) {
-                    $counter++;
-                }
+        foreach ($emotion_words as $emotion_word) {
+            $emotion_word = trim($emotion_word);
+            
+            if (strpos($sentence, $emotion_word)) {
+                echo $emotion_word;
+                $counter++;
             }
         }
         return $counter;
@@ -49,31 +50,39 @@ class Opinion {
         return "This sentence has $emotion[0] positive words and $emotion[1] negative words.<br>";
     }
     public function check_positive_negative($sentence) {
-        $sentence_array = explode(" ", strtolower($sentence));
-        $positive = $this->positive($sentence_array);
-        $negative = $this->negative($sentence_array);
+        $positive = $this->positive($sentence);
+        $negative = $this->negative($sentence);
         return array($positive, $negative);
     }
     public function check_chapter_emotions() {
+        $executionStartTime = microtime(true);
         global $database;
+        $executionEndTime = microtime(true);
+        echo $executionStartTime - $executionEndTime . "<br>";
         $array = array();
         $book = $_SESSION['book'];
+        $executionEndTime = microtime(true);
+        echo $executionStartTime - $executionEndTime . "<br>";
         $chapters = $database->select_chapters($book);
+        $executionEndTime = microtime(true);
+        echo $executionStartTime - $executionEndTime . "<br>";
         $sentence = "";
         foreach ($chapters as $chapter) {
+            $executionEndTime = microtime(true);
+            echo $executionStartTime - $executionEndTime . "<br>";
+            echo $chapter['chaptID'] . "<br>";
             if (!in_array($chapter, $array)) {
                 $bible_chapter = $database->select_chapter($chapter['chaptID']);
-                foreach ($bible_chapter as $bible_sentence) {
-                    $sentence .= $bible_sentence['sentence'] . " ";
-                }
                 // print_r($bible_chapter);
-                $emotions = $this->check_positive_negative($sentence);
+                $emotions = $this->check_positive_negative($bible_chapter);
                 $positive = $emotions[0];
                 $negative = $emotions[1];
-                echo $chapter['chaptID'] . ". of $book has $positive positive and $negative negative words. <br>";
+                echo $chapter['chaptID'] . ". chapter of $book has $positive positive and $negative negative words. <br>";
                 array_push($array, $chapter);
             }
         }
+        $executionEndTime = microtime(true);
+        echo $executionStartTime - $executionEndTime . "<br>";
     }
 }
 
