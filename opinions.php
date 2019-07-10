@@ -76,10 +76,5 @@ class Opinion {
 
 $opinion = new Opinion();
 // echo $opinion->check("Suffering War-like Hug Death Love");
-if(isset($_POST['emotion'])) {
-    echo $opinion->check($_SESSION['sentence_text']);
-} 
-if(isset($_POST['check_emotions'])) {
-    $opinion->check_chapter_emotions();    
-} 
+
 ?>

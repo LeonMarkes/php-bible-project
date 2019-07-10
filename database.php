@@ -49,6 +49,9 @@ class Database {
     }
     public function get_book_id($sentence) {
         global $session;
+        echo $sentence . "<br>";
+        echo $_SESSION['chapter'] . "<br>";
+        echo $_SESSION['sentence'] . "<br>";
         $bookId = $this->query("SELECT bookID FROM sentence WHERE sentence = '$sentence' AND chaptID = " . $_SESSION['chapter'] . " AND sentID = " . $_SESSION['sentence'] . ";");
         return $bookId;
     }
@@ -95,12 +98,7 @@ class Database {
 
 $database = new Database();
 
-if(isset($_POST['changed_text'])) {
-    $database->change_sentence($_POST['changed_text']);
-} 
-if(isset($_POST['restore'])) {
-    $database->restore_sentence();
-}
+
 // if($database->connection) {
 //     echo 'spojen';
 // }

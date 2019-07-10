@@ -1,7 +1,7 @@
 <?php
 require_once('init.php');
 class Create_elements {
-    public function dropdown($content, $book = NULL, $chapter = NULL) {
+    public function dropdown($content, $classification = NULL) {
         global $database;
         global $session;
 
@@ -14,15 +14,15 @@ class Create_elements {
                 $extra_classes = "bible-book";
                 break;
             case "chapter":
-                $values = $database->select_chapters($book);
-                $session->set_variable("book", $book);
+                $values = $database->select_chapters($classification);
+                $session->set_variable("book", $classification);
                 $assoc = "chaptID";
                 $name = "Choose a chapters";
                 $extra_classes = "chapter";
                 break;
             case "sentence":
-                $values = $database->select_sentences($book, $chapter);
-                $session->set_variable("chapter", $chapter);
+                $values = $database->select_sentences($_SESSION['book'], $classification);
+                $session->set_variable("chapter", $classification);
                 $assoc = "sentID";
                 $name = "Choose a sentences";
                 $extra_classes = "sentence";
@@ -34,7 +34,7 @@ class Create_elements {
         $dropdown .= "<div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>";
         foreach ($values as $value) {
             if (!in_array($value, $array)) {
-                $dropdown .= "<a class='dropdown-item " . $extra_classes ."' id='"  . ($assoc == "sentID" ? $value['title'] : $value[$assoc]) .  "' name='" . $book . "' href='#'>" . $value[$assoc] . "</a>";
+                $dropdown .= "<a class='dropdown-item " . $extra_classes ."' id='"  . ($assoc == "sentID" ? $value['title'] : $value[$assoc]) .  "' name='" . $classification . "' href='#'>" . $value[$assoc] . "</a>";
                 array_push($array, $value);
             }
         }
@@ -54,18 +54,10 @@ class Create_elements {
         $textarea .= $sentence['sentence'];
         $textarea .= "</textarea>";
         $session->set_variable('sentence_text', $sentence['sentence']);
-        var_dump($_SESSION);
+        // var_dump($_SESSION);
         return $textarea;
     }
 }
 $create = new Create_elements();
-if (isset($_POST['first_book_name'])) {
-    echo $create->dropdown("chapter", $_POST['first_book_name']);
-}
-if (isset($_POST['second_chapter_number']) && isset($_POST['second_book_name'])) {
-    echo $create->dropdown("sentence", $_POST['second_book_name'], $_POST['second_chapter_number']);
-}
-if (isset($_POST['third_chapter_number']) && isset($_POST['third_sentence_number']) && isset($_POST['third_book_name'])) {
-    echo $create->textarea($_POST['third_sentence_number']);
-}
+
 ?>

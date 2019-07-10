@@ -4,8 +4,8 @@ $(document).ready(function() {
         console.log(bookName);
         console.log(event);        
         $.ajax({
-            url: 'create_elements.php',
-            data: { first_book_name: bookName },
+            url: 'post_calls.php',
+            data: { book_name: bookName },
             type: 'post',
             success: function(data) {
                 //$('.sentences').hide();
@@ -19,10 +19,10 @@ $(document).ready(function() {
         console.log("done");
     });
     $('.chapters').on('click', '.chapter', function(event) {
-        var chapterNumber = event.target.id, bookName = event.target.name;
+        var chapterNumber = event.target.id;
         $.ajax({
-            url: 'create_elements.php',
-            data: { second_chapter_number: chapterNumber, second_book_name: bookName },
+            url: 'post_calls.php',
+            data: { chapter_number: chapterNumber },
             type: 'post',
             success: function(data) {
                 $('.sentences').html(data);
@@ -35,10 +35,10 @@ $(document).ready(function() {
         console.log("done");
     });
     $('.sentences').on('click', '.sentence', function(event) {
-        var bookName = event.target.id, chapterNumber = event.target.name, sentenceNumber = event.target.innerText;
+        var sentenceNumber = event.target.innerText;
         $.ajax({
-            url: 'create_elements.php',
-            data: { third_chapter_number: chapterNumber, third_book_name: bookName, third_sentence_number: sentenceNumber},
+            url: 'post_calls.php',
+            data: { sentence_number: sentenceNumber },
             type: 'post',
             success: function(data) {
                 $('.textarea').html(data);
@@ -55,7 +55,7 @@ $(document).ready(function() {
        var changedText =  $('.bible-text').val();
         console.log(changedText);
        $.ajax({
-           url: 'database.php',
+           url: 'post_calls.php',
            data: {changed_text: changedText},
            type: 'post',
            success: function(data) {
@@ -73,7 +73,7 @@ $(document).ready(function() {
         // neka se ovdje ubaci pokrene druga skripta gdje će se usporediti da li postoji tekst u orig_sent i onda će se obnoviti, ili ako nije zamjenjen neka se prikaže tekst iz sessiona
         var restore = true;
         $.ajax({
-            url: 'database.php',
+            url: 'post_calls.php',
             data: {restore: restore},
             type: 'post',
             success: function(data) {
@@ -88,7 +88,7 @@ $(document).ready(function() {
     $('.buttons').on('click', '.emotions', function(event) {
         var emotion = true;
         $.ajax({
-            url: 'opinions.php',
+            url: 'post_calls.php',
             data: {emotion: emotion},
             type: 'post',
             success: function(data) {
@@ -103,7 +103,7 @@ $(document).ready(function() {
     $(".book-button").on("click", ".check-emotions", function(event) {
         var checkEmotions = true;       
         $.ajax({
-            url: 'opinions.php',
+            url: 'post_calls.php',
             data: { check_emotions: checkEmotions },
             type: 'post',
             success: function(data) {
