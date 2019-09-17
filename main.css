@@ -4,3 +4,10 @@
 .visible {
     opacity: 1;
 }
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}

@@ -15,4 +15,4 @@ Na temelju ovog popisa za svaku rečenicu iz biblije izračunati i prikazati bro
 Također izračunati i prikazati broj pozitivnih i negativnih riječi te njihovu razliku za svako poglavlje svake knjige, te omjer broja pozitivnih i negativnih u odnosu na ukupni broj riječi.
 Ispisati top listu 10 najpozitivnijih i nejnegativnijih poglavlja s obzirom na apsolutni broj, te s obzirom na omjer.
 
-Izvještaje prikazati na ekranu, a onaj označen * izvesti u CSV. .
+Izvještaje prikazati na ekranu, a onaj označen * izvesti u CSV.

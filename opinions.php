@@ -47,19 +47,26 @@ class Opinion {
 
     public function check($sentence) {
         $emotion = $this->check_positive_negative($sentence);
-        $this->write_into_csv("This sentence has $emotion[0] positive words and $emotion[1] negative words.");
-        return "This sentence has $emotion[0] positive words and $emotion[1] negative words.<br>";
+        $pos_ratio = intval($emotion[2] * 100);
+        $neg_ratio = intval($emotion[3] * 100);
+        $output_message = "This sentence has $emotion[0] positive words ($pos_ratio% of the sentence) and $emotion[1] negative words ($neg_ratio% of the sentence).\n";
+        $this->write_into_csv($output_message);
+        return $output_message;
     }
     public function check_positive_negative($sentence) {
         $positive = $this->positive($sentence);
         $negative = $this->negative($sentence);
-        return array($positive, $negative);
+        $words = str_word_count($sentence);
+        $pos_ratio = $positive / $words;
+        $neg_ratio = $negative / $words;
+        return array($positive, $negative, $pos_ratio, $neg_ratio);
     }
     public function check_chapter_emotions() {
         global $database;
         $array = array();
         $book = $_SESSION['book'];
         $chapters = $database->select_chapters($book);
+        $chapters_array = array();
         foreach ($chapters as $chapter) {
             if (!in_array($chapter, $array)) {
                 $bible_chapter = $database->select_chapter($chapter['chaptID']);
@@ -67,10 +74,12 @@ class Opinion {
                 $emotions = $this->check_positive_negative($bible_chapter);
                 $positive = $emotions[0];
                 $negative = $emotions[1];
+                array_push($chapters_array, array("chapter" => $chapter['chaptID'], "positive" => $positive, "negative" => $negative));
                 echo $chapter['chaptID'] . ". chapter of $book has $positive positive and $negative negative words. <br>";
                 array_push($array, $chapter);
             }
         }
+        
     }
 }
 
