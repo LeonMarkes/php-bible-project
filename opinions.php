@@ -61,6 +61,22 @@ class Opinion {
         $neg_ratio = $negative / $words;
         return array($positive, $negative, $pos_ratio, $neg_ratio);
     }
+    public function sort_by($emotion, $array) {
+        if ($emotion == "positive") {
+            usort($array, function($a, $b) {
+                return $b["positive"] <=> $a["positive"];
+            });
+        } else {
+            usort($array, function($a, $b) {
+                return $b["negative"] <=> $a["negative"];
+            });
+        }
+        
+        echo "<br>Top 10 chapters with " . $emotion . " emotions are: <br>";
+        for ($i = 0; $i < 10; $i++) {
+            echo $array[$i]["chapter"] . ". chapter has " . $array[$i][$emotion] . " " . $emotion . " words.<br>";
+        }
+    }
     public function check_chapter_emotions() {
         global $database;
         $array = array();
@@ -79,8 +95,11 @@ class Opinion {
                 array_push($array, $chapter);
             }
         }
+        $this->sort_by("positive", $chapters_array);
+        $this->sort_by('negative', $chapters_array);
         
     }
+    
 }
 
 $opinion = new Opinion();
