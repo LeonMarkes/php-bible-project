@@ -22,5 +22,5 @@ if (isset($_POST['chapter_number'])) {
 if (isset($_POST['sentence_number'])) {
     echo $create->textarea($_POST['sentence_number']);
 }
-
+// napiši funkciju koja će primiti post parametre i odradi sve
 ?>
