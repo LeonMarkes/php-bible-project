@@ -1,3 +1,11 @@
+# PHP Bible
+
+### Technologies
+    - HTML
+    - CSS
+    - JavaScript (AJAX)
+    - PHP
+
 U biblija.zip je tekst biblije u xml formatu. Biblija se sastoji od 66 knjiga (oznaka <b>), svaka knjiga ima poglavlja  (oznaka <c>), a poglavlja se sastoje od rečenica (stihova) (oznaka <v>). Za podatke iz datoteke napraviti (može u phpMyAdminu) bazu podataka sa tablicama:
     • book (bookID, title) 
     • sentence(chaptID, sentID, content, bookID, updated)
@@ -15,4 +23,3 @@ Na temelju ovog popisa za svaku rečenicu iz biblije izračunati i prikazati bro
 Također izračunati i prikazati broj pozitivnih i negativnih riječi te njihovu razliku za svako poglavlje svake knjige, te omjer broja pozitivnih i negativnih u odnosu na ukupni broj riječi.
 Ispisati top listu 10 najpozitivnijih i nejnegativnijih poglavlja s obzirom na apsolutni broj, te s obzirom na omjer.
 
-Izvještaje prikazati na ekranu, a onaj označen * izvesti u CSV.
